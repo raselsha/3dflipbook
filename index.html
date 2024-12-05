@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/default-book-view.js"></script>
+    <script src="assets/js/html2canvas.min.js"></script>
+    <script src="assets/js/pdf.min.js"></script>
+    <script src="assets/js/pdf.worker.js"></script>
+    <script src="assets/js/three.min.js"></script>
+    <script src="assets/js/flip-book.js"></script>
+</head>
+<body>
+    
+    <div class="flip-book-container" style="height: 900px;width: 900px;margin: auto;"></div>
+    <script>
+        PDFJS.workerSrc = 'assets/js/pdf.worker.js';
+        options = {
+            pdf: 'sample.pdf',
+            pages: 2,
+            template: {
+                html: 'assets/templates/default-book-view.html',
+                styles: [
+                    'assets/css/black-book-view.css'// or one of white-book-view.css, short-white-book-view.css, shart-black-book-view.css
+                ],
+                links: [{
+                    rel: 'stylesheet',
+                    href: 'assets/css/font-awesome.min.css'
+                }],
+                script: 'assets/js/default-book-view.js',
+                printStyle: undefined, // or you can set your stylesheet for printing ('print-style.css')
+                sounds: {
+                    startFlip: 'assets/sounds/start-flip.mp3',
+                    endFlip: 'assets/sounds/end-flip.mp3'
+                }
+            },
+            controlsProps: { // set of optional properties that allow to customize 3D FlipBook control
+                downloadURL: 'sample.pdf'
+            },
+            bookStyle: 'volume',
+            propertiesCallback: function(props) { // optional function - it lets to customize 3D FlipBook
+                props.page.depth /= 2;
+                props.cover.binderTexture = 'exampleTexture.jpg';
+                props.cssLayersLoader = function(n, clb) {// n - page number
+                    clb([{
+                    css: '.heading {margin-top: 20px;background-color: green;}',
+                    html: '<h1 class="heading">Hello</h1>',
+                    js: function (jContainer, props) { // jContainer - jQuery element that contains HTML Layer content
+                        console.log('init');
+                        return { // set of callbacks
+                        hide: function() {console.log('hide');},
+                        hidden: function() {console.log('hidden');},
+                        show: function() {console.log('show');},
+                        shown: function() {console.log('shown');},
+                        dispose: function() {console.log('dispose');}
+                        };
+                    }
+                    }]);
+                };
+                return props;
+            },
+            
+        }
+        
+        var book = $('.flip-book-container').FlipBook(options);
+    </script>
+</body>
+</html>
