@@ -4,27 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="assets/css/fontawesome.min.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-solid.min.css">
+    <link rel="stylesheet" href="assets/style.css">
     <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/default-book-view.js"></script>
-    <script src="assets/js/html2canvas.min.js"></script>
-    <script src="assets/js/pdf.min.js"></script>
-    <script src="assets/js/pdf.worker.js"></script>
-    <script src="assets/js/three.min.js"></script>
-    <script src="assets/js/flip-book.js"></script>
-    <style>
-        .flip-book-container {
-            height:650px;
-            width: 900px;
-            margin: auto;
-            border: 1px solid #ddd;
-        }
-    </style>
+
 </head>
 <body>
-    
-    <div class="flip-book-container"></div>
+    <div class="sample-container-box">
+        <div class="sample-container"></div>
+    </div>
+
+    <script src="assets/js/three.min.js"></script>
+    <script src="assets/js/pdf.min.js"></script>
+
+    <script type="text/javascript">
+    window.PDFJS_LOCALE = {
+        pdfJsWorker: 'assets/js/pdf.worker.js',
+        pdfJsCMapUrl: 'https://cdn.3dflipbook.net/cmaps'
+    };
+    </script>
+    <script src="assets/js/3dflipbook.min.js"></script>
+    <script src="assets/js/simple-jquery-pdf.js"></script>
+
     <script>
-        PDFJS.workerSrc = 'assets/js/pdf.worker.js';
+       
         options = {
             pdf: 'sample.pdf',
             pages: -2,
@@ -112,7 +116,27 @@
             error: function(e) { // optional function for notification about errors
             } 
         }
-        var book = $('.flip-book-container').FlipBook(options);
+        var opt = {
+            pdf: 'sample.pdf',
+            template:function() {
+                return {
+                    html: [{
+                    url: 'templates/default-book-view.html',
+                    data: jsData.urls['templates/default-book-view.html']}],
+                    script: [{
+                    url: 'js/default-book-view.js',
+                    data: jsData.urls['js/default-book-view.js']}],
+                    styles: [{
+                    url: 'css/font-awesome.min.css',
+                    data: jsData.urls['css/font-awesome.min.css']},{
+                    url: 'css/short-black-book-view.css',
+                    data: jsData.urls['css/short-black-book-view.css']},],
+                    sounds: {"startFlip":"https:\/\/cdn.3dflipbook.net\/sounds\/start-flip.mp3","endFlip":"https:\/\/cdn.3dflipbook.net\/sounds\/end-flip.mp3"},
+                    init: undefined      
+                };
+            }
+        }
+        var book = $('.sample-container').FlipBook(opt);
     </script>
 </body>
 </html>
