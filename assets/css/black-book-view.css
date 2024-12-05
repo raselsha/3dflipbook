@@ -19,16 +19,16 @@
 }
 
 .flip-book .view .prev {
-  left: 20px;
+  left: 0px;
 }
 
 .flip-book .view .next {
-  right: 20px;
+  right: 0px;
 }
 
 
 .flip-book .view .fnav a {
-  font-size: 72pt;
+  font-size: 50px;
   color: #666;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .flip-book .view .fnav a:active {
-  font-size: 70pt;
+  font-size: 60px;
 }
 
 .flip-book .view .fnav .hidden {
@@ -134,6 +134,7 @@
   margin: 0 auto;
   opacity: 0.3;
   transition: opacity 2s ease-in-out 3s;
+  width: 500px;
 }
 
 .flip-book .controls .fnavbar:hover {
@@ -154,7 +155,7 @@
   text-align: center;
   background-image: linear-gradient(to bottom,#3c3c3c 0,#222 100%);
   background-repeat: repeat-x;
-  padding: 3px;
+  padding: 0px;
   overflow: visible;
   background-color: #3c3c3c;
 }

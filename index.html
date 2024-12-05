@@ -11,15 +11,74 @@
     <script src="assets/js/pdf.worker.js"></script>
     <script src="assets/js/three.min.js"></script>
     <script src="assets/js/flip-book.js"></script>
+    <style>
+        .flip-book-container {
+            height:650px;
+            width: 900px;
+            margin: auto;
+            border: 1px solid #ddd;
+        }
+    </style>
 </head>
 <body>
     
-    <div class="flip-book-container" style="height: 900px;width: 900px;margin: auto;"></div>
+    <div class="flip-book-container"></div>
     <script>
         PDFJS.workerSrc = 'assets/js/pdf.worker.js';
         options = {
             pdf: 'sample.pdf',
-            pages: 2,
+            pages: -2,
+            controlsProps: { // set of optional properties that allow to customize 3D FlipBook control
+                downloadURL: 'sample.pdf'
+            },
+            propertiesCallback: function(props) { // optional function - it lets to customize 3D FlipBook
+                props.page.depth /= 2;
+                props.cover.binderTexture = 'http://localhost/3dflipbook/cover.jpg';
+                console.log(props);
+                props.height = 0.297;
+                props.width  = 0.21;
+                props.gravity  = 1;
+                props.cachedPages = 50;
+                props.renderInactivePages = true;
+                props.renderWhileFlipping = false;
+                props.preloadPages = 1;
+                props.cssLayersLoader = function(n, clb) {// n - page number
+                    clb([{
+                    css: '.heading {margin-top: 20px;background-color: green;}',
+                    html: '<h1 class="heading">Hello</h1>',
+                    js: function (jContainer, props) { // jContainer - jQuery element that contains HTML Layer content
+                        console.log('init');
+                        return { // set of callbacks
+                        // hide: function() {console.log('hide');},
+                        // hidden: function() {console.log('hidden');},
+                        // show: function() {console.log('show');},
+                        // shown: function() {console.log('shown');},
+                        // dispose: function() {console.log('dispose');}
+                        };
+                    }
+                    }]);
+                };
+                return props;
+            },
+            pageCallback: function(n) { // this function has to return source description for FlipBook page
+                // for image sources
+                var imageDescription = {
+                    type: 'image',
+                    src: 'example/' + n + '.jpg',
+                    interactive: false
+                };
+                // for html sources
+                var htmlDescription = {
+                    type: 'html',
+                    src: 'example/' + n + '.html',
+                    interactive: true // or false - if your page interact with the user then use true
+                };
+                // for blank page
+                var blankDescription = {
+                    type: 'blank'
+                };
+                return htmlDescription; // or imageDescription or blankDescription
+            },
             template: {
                 html: 'assets/templates/default-book-view.html',
                 styles: [
@@ -36,34 +95,23 @@
                     endFlip: 'assets/sounds/end-flip.mp3'
                 }
             },
-            controlsProps: { // set of optional properties that allow to customize 3D FlipBook control
-                downloadURL: 'sample.pdf'
+            pdfLinks: {
+                handler: function(type, destination) { 
+                    return true; 
+                }
+            },
+            autoNavigation: {
+                urlParam: 'fb3d-page', // url query param name for deep linking: http://example.com?fb3d-page=10
+                navigates: 1, // number of instances that will be navigated automatically,
+                pageN: undefined // auto open page pageN
+            },
+            activateFullScreen: false, // activate fullscreen if it is possible (API can only be initiated by a user gesture)
+            ready: function(scene) { // optional function - this function executes when loading is complete
             },
             bookStyle: 'volume',
-            propertiesCallback: function(props) { // optional function - it lets to customize 3D FlipBook
-                props.page.depth /= 2;
-                props.cover.binderTexture = 'exampleTexture.jpg';
-                props.cssLayersLoader = function(n, clb) {// n - page number
-                    clb([{
-                    css: '.heading {margin-top: 20px;background-color: green;}',
-                    html: '<h1 class="heading">Hello</h1>',
-                    js: function (jContainer, props) { // jContainer - jQuery element that contains HTML Layer content
-                        console.log('init');
-                        return { // set of callbacks
-                        hide: function() {console.log('hide');},
-                        hidden: function() {console.log('hidden');},
-                        show: function() {console.log('show');},
-                        shown: function() {console.log('shown');},
-                        dispose: function() {console.log('dispose');}
-                        };
-                    }
-                    }]);
-                };
-                return props;
-            },
-            
+            error: function(e) { // optional function for notification about errors
+            } 
         }
-        
         var book = $('.flip-book-container').FlipBook(options);
     </script>
 </body>
