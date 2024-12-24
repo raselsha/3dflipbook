@@ -19,7 +19,7 @@
     <script type="text/javascript">
     window.PDFJS_LOCALE = {
         pdfJsWorker: 'assets/js/pdf.worker.js',
-        pdfJsCMapUrl: 'https://cdn.3dflipbook.net/cmaps'
+        pdfJsCMapUrl: 'cmaps'
     };
     </script>
     <script src="assets/js/3dflipbook.min.js"></script>
@@ -28,8 +28,30 @@
     <script>
         options = {
             pdf: 'sample.pdf',
+            pages:4,
             controlsProps: { // set of optional properties that allow to customize 3D FlipBook control
                 downloadURL: 'sample.pdf'
+            },
+            propertiesCallback: function(props) { // optional function - it lets to customize 3D FlipBook
+                props.page.depth /= 2;
+                props.cover.binderTexture = 'exampleTexture.jpg';
+                props.cssLayersLoader = function(n, clb) {// n - page number
+                    clb([{
+                    css: '.heading {margin-top: 200px;background-color: red;}',
+                    html: '<h1 class="heading">Hello</h1>',
+                    js: function (jContainer, props) { // jContainer - jQuery element that contains HTML Layer content
+                        console.log('init');
+                        return { // set of callbacks
+                        hide: function() {console.log('hide');},
+                        hidden: function() {console.log('hidden');},
+                        show: function() {console.log('show');},
+                        shown: function() {console.log('shown');},
+                        dispose: function() {console.log('dispose');}
+                        };
+                    }
+                    }]);
+                };
+                return props;
             },
             template:function() {
                 return {
