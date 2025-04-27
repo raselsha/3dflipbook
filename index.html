@@ -1,57 +1,68 @@
 <!DOCTYPE html>
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>3D FlipBook Simple PDF by jQuery</title>
-    <link rel="stylesheet" href="assets/css/fontawesome.min.css">
-    <link rel="stylesheet" href="assets/css/fontawesome-solid.min.css">
-    <link rel="stylesheet" href="assets/style.css">
-    <script src="assets/js/jquery.min.js"></script>
-    </head>
-  <body>
-      <div class="sample-container-box">
-        <div class="sample-container"></div>
-      </div>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>3D FlipBook Simple PDF by jQuery</title>
+		<link rel="stylesheet" href="assets/css/fontawesome.min.css" />
+		<link rel="stylesheet" href="assets/css/fontawesome-solid.min.css" />
+		<link rel="stylesheet" href="assets/style.css" />
+		<script src="assets/js/jquery.min.js"></script>
+	</head>
+	<body>
+		<div class="sample-container-box">
+		<div class="sample-container"></div>
+		</div>
 
-<script src="assets/js/three.min.js"></script>
-<script src="assets/js/pdf.min.js"></script>
+		<script src="assets/js/three.min.js"></script>
+		<script src="assets/js/pdf.min.js"></script>
 
-<script type="text/javascript">
-  window.PDFJS_LOCALE = {
-    pdfJsWorker: 'assets/js/pdf.worker.js',
-    pdfJsCMapUrl: 'https://cdn.3dflipbook.net/cmaps'
-  };
-</script>
-<script src="assets/js/3dflipbook.min.js"></script>
-<script src="assets/js/simple-jquery-pdf.js"></script>
-<script type="text/javascript">
-  $('.sample-container').FlipBook({
-    pdf: 'sample.pdf',
-    page:3,
-    template:function() {
-      return {
-        html: [{
-          url: 'templates/default-book-view.html',
-          data: jsData.urls['templates/default-book-view.html']}],
-        script: [{
-          url: 'js/default-book-view.js',
-          data: jsData.urls['js/default-book-view.js']}],
-        styles: [{
-          url: 'css/font-awesome.min.css',
-          data: jsData.urls['css/font-awesome.min.css']},{
-          url: 'css/short-black-book-view.css',
-          data: jsData.urls['css/short-black-book-view.css']},],
-        sounds: {"startFlip":"https:\/\/cdn.3dflipbook.net\/sounds\/start-flip.mp3","endFlip":"https:\/\/cdn.3dflipbook.net\/sounds\/end-flip.mp3"},
-        init: undefined      };
-    }
-      });
-</script>
-
-
-
-
-
-  
-
-</body></html>
+		<script type="text/javascript">
+		window.PDFJS_LOCALE = {
+			pdfJsWorker: "assets/js/pdf.worker.js",
+			pdfJsCMapUrl: "https://cdn.3dflipbook.net/cmaps",
+		};
+		</script>
+		<script src="assets/js/3dflipbook.min.js"></script>
+		<script src="assets/js/simple-jquery-pdf.js"></script>
+		<script type="text/javascript">
+			let options = {
+				pdf: "sample.pdf",
+				page: 3,
+				template: function () {
+				return {
+					html: [
+					{
+						url: "templates/default-book-view.html",
+						data: jsData.urls["templates/default-book-view.html"],
+					},
+					],
+					script: [
+					{
+						url: "js/default-book-view.js",
+						data: jsData.urls["js/default-book-view.js"],
+					},
+					],
+					styles: [
+					{
+						url: "css/font-awesome.min.css",
+						data: jsData.urls["css/font-awesome.min.css"],
+					},
+					{
+						url: "css/short-black-book-view.css",
+						data: jsData.urls["css/short-black-book-view.css"],
+					},
+					],
+					sounds: {
+					startFlip: "assets/sounds/start-flip.mp3",
+					endFlip: "assets/sounds/end-flip.mp3",
+					},
+					init: undefined,
+				};
+				},
+			};
+			$(".sample-container").FlipBook(options);
+		</script>
+	</body>
+</html>
